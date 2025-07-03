@@ -1,0 +1,8 @@
+.card .card-header .btn:not(.note-btn) {
+    border-radius: 0.25rem;
+}
+
+.product-item .product-image {
+    border-radius: 10px;
+    margin-bottom: 0px;
+}

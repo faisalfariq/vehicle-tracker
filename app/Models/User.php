@@ -17,10 +17,14 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $table = 'users';
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name', 
+        'email', 
+        'password', 
+        'role_id', 
+        'region_id', 
+        'is_active'
     ];
 
     /**
@@ -44,5 +48,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 }

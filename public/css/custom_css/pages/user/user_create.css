@@ -1,0 +1,10 @@
+.show_password:hover {
+    cursor: pointer;
+}
+.select2-container--default .select2-selection--single .select2-selection__clear {
+    margin-right: 1.5rem;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #495057;
+}
