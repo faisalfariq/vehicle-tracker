@@ -33,10 +33,14 @@ Aplikasi manajemen pemesanan kendaraan dinas berbasis Laravel.
 
 ### 1. Instalasi
 
-1. Clone repository ini. ( `https://github.com/faisalfariq/vehicle-tracker` )
+1. Clone repository ini. (`https://github.com/faisalfariq/vehicle-tracker`)
 2. Jalankan `composer install` dan `npm install`.
 3. Copy `.env.example` ke `.env` dan sesuaikan konfigurasi database.
-4. Jalankan migrasi dan seed data:
+4. Jalankan perintah berikut untuk generate application key (wajib):
+   ```bash
+   php artisan key:generate
+   ```
+5. Jalankan migrasi dan seed data:
 
    ```bash
    php artisan migrate --seed --class=CompletedSeeder
