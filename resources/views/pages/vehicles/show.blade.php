@@ -4,6 +4,13 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <style>
+         .table:not(.table-sm):not(.table-md):not(.dataTable) td, .table:not(.table-sm):not(.table-md):not(.dataTable) th {
+         padding: 0 25px;
+         height: 35px;
+         vertical-align: middle;
+     }
+     </style>
 @endpush
 
 @section('main')
@@ -23,81 +30,81 @@
                             <div class="card-header">
                                 <h2 class="section-title text-primary m-0">Detail Vehicle</h2>
                             </div>
-                            <div class="card-body row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">ID</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $vehicle->id }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Nama</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $vehicle->name }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">No Polisi</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $vehicle->plate_number }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Tipe</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $vehicle->type->name ?? '-' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">BBM</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $vehicle->fuel_type }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Region</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $vehicle->region->name ?? '-' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Status</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">
-                                                @if($vehicle->is_available)
-                                                    <span class="badge bg-success">Tersedia</span>
-                                                @else
-                                                    <span class="badge bg-secondary">Tidak Tersedia</span>
-                                                @endif
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Kendaraan Disewa?</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">
-                                                @if($vehicle->is_rented)
-                                                    <span class="badge bg-warning text-dark">Disewa</span>
-                                                @else
-                                                    <span class="badge bg-info text-dark">Milik Sendiri</span>
-                                                @endif
-                                            </label>
-                                        </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="200" class="text-primary font-weight-bold">
+                                                        <i class="fas fa-id-card"></i> ID
+                                                    </td>
+                                                    <td width="50" class="text-center">:</td>
+                                                    <td>{{ $vehicle->id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-car"></i> Nama
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $vehicle->name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-hashtag"></i> No Polisi
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $vehicle->plate_number }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-tag"></i> Tipe
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $vehicle->type->name ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-gas-pump"></i> BBM
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $vehicle->fuel_type }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-map-marker-alt"></i> Region
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $vehicle->region->name ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-info-circle"></i> Status
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>
+                                                        @if($vehicle->is_available)
+                                                            <span class="badge badge-success">Tersedia</span>
+                                                        @else
+                                                            <span class="badge badge-secondary">Tidak Tersedia</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-key"></i> Kendaraan Disewa?
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>
+                                                        @if($vehicle->is_rented)
+                                                            <span class="badge badge-warning">Disewa</span>
+                                                        @else
+                                                            <span class="badge badge-info">Milik Sendiri</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

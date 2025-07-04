@@ -4,6 +4,13 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <style>
+         .table:not(.table-sm):not(.table-md):not(.dataTable) td, .table:not(.table-sm):not(.table-md):not(.dataTable) th {
+         padding: 0 25px;
+         height: 35px;
+         vertical-align: middle;
+     }
+     </style>
 @endpush
 
 @section('main')
@@ -23,37 +30,41 @@
                             <div class="card-header">
                                 <h2 class="section-title text-primary m-0">Detail Region</h2>
                             </div>
-                            <div class="card-body row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">ID</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $region->id }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Name</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $region->name }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Type</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ ucfirst($region->type) }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Address</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $region->address }}</label>
-                                        </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="200" class="text-primary font-weight-bold">
+                                                        <i class="fas fa-id-card"></i> ID
+                                                    </td>
+                                                    <td width="50" class="text-center">:</td>
+                                                    <td>{{ $region->id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-map-marker-alt"></i> Name
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $region->name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-tag"></i> Type
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ ucfirst($region->type) }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-map"></i> Address
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $region->address }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

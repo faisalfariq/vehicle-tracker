@@ -4,6 +4,13 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <style>
+         .table:not(.table-sm):not(.table-md):not(.dataTable) td, .table:not(.table-sm):not(.table-md):not(.dataTable) th {
+         padding: 0 25px;
+         height: 35px;
+         vertical-align: middle;
+     }
+     </style>
 @endpush
 
 @section('main')
@@ -23,59 +30,61 @@
                             <div class="card-header">
                                 <h2 class="section-title text-primary m-0">Detail a Driver</h2>
                             </div>
-                            <div class="card-body row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">ID</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $driver->id }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Name</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $driver->name }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">License Number</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $driver->license_number }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Phone</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $driver->phone }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Region</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $driver->region->name ?? '-' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Status</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">
-                                                @if($driver->is_active)
-                                                    <span class="badge bg-success">Active</span>
-                                                @else
-                                                    <span class="badge bg-secondary">Inactive</span>
-                                                @endif
-                                            </label>
-                                        </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="200" class="text-primary font-weight-bold">
+                                                        <i class="fas fa-id-card"></i> ID
+                                                    </td>
+                                                    <td width="50" class="text-center">:</td>
+                                                    <td>{{ $driver->id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-user"></i> Name
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $driver->name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-id-badge"></i> License Number
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $driver->license_number }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-phone"></i> Phone
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $driver->phone }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-map-marker-alt"></i> Region
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $driver->region->name ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-info-circle"></i> Status
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>
+                                                        @if($driver->is_active)
+                                                            <span class="badge badge-success">Active</span>
+                                                        @else
+                                                            <span class="badge badge-secondary">Inactive</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

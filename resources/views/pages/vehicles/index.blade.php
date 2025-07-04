@@ -13,48 +13,33 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1 class="text-primary">Data Vehicles</h1>
+                <h1 class="text-primary">Data Vehicles</h1> 
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item"><a href="#">Vehicle List</a></div>
                     <div class="breadcrumb-item">Data Vehicles</div>
                 </div>
             </div>
             <div class="section-body">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card mb-0">
-                            <div class="card-body">
-                                <ul class="nav nav-pills">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#">All <span id="total_data"
-                                                class="badge badge-white"></span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row mt-1">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('vehicles.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
-                                    Add New</a>
+                                <h2 class="section-title text-primary m-0">Vehicle List</h2>
                             </div>
                             <div class="card-body">
-                                <div class="float-right">
+                                <div class="float-left">
+                                    <a href="{{ route('vehicles.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Add New</a>
+                                </div>
+                                <div class="float-right mb-3">
                                     <form action="{{ route('vehicles.index') }}" method="GET">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="keyword" name="keyword"
-                                                placeholder="Search">
+                                            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Search">
                                             <div class="input-group-append">
-                                                <button type="submit" class="btn btn-primary"><i
-                                                        class="fas fa-search"></i></button>
+                                                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
-
                                 <div class="clearfix mb-3"></div>
 
                                 <div id="vehicleTableList">

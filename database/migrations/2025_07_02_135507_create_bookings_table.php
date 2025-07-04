@@ -21,7 +21,7 @@ return new class extends Migration
             $table->dateTime('end_datetime');
             $table->string('destination');
             $table->text('reason')->nullable();
-            $table->enum('status', ['pending', 'approved', 'rejected', 'ongoing', 'completed'])->default('pending');
+            $table->enum('status', ['draft','pending', 'approved', 'rejected', 'onuse', 'finish'])->default('draft');
             $table->timestamps();
         });
     }

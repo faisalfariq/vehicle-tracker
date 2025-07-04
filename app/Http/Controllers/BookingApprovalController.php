@@ -7,12 +7,34 @@ use App\Models\Booking;
 use App\Models\User;
 use App\Models\AppLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookingApprovalController extends Controller
 {
     public function index()
     {
-        $approvals = BookingApproval::with(['booking', 'approver'])->latest()->paginate(20);
+        $user = Auth::user();
+        
+        $query = BookingApproval::with(['booking', 'approver']);
+
+        // Filter based on user role
+        if ($user->role->name === 'user') {
+            // User: only see approvals for their own bookings
+            $query->whereHas('booking', function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        } elseif ($user->role->name === 'approver') {
+            // Approver: see approvals they need to process and their own bookings' approvals
+            $query->where(function($q) use ($user) {
+                $q->where('approver_id', $user->id) // approvals they need to process
+                  ->orWhereHas('booking', function($subQ) use ($user) {
+                      $subQ->where('user_id', $user->id); // approvals for their own bookings
+                  });
+            });
+        }
+        // Admin: see all approvals (no additional filter)
+
+        $approvals = $query->latest()->paginate(20);
         return view('pages.booking_approvals.index', compact('approvals'));
     }
 

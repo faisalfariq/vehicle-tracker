@@ -1,61 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Vehicle Tracker
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi manajemen pemesanan kendaraan dinas berbasis Laravel.
 
-## About Laravel
+## Activity Diagram dan Pysical data model ada pada direktory /docs
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Daftar Akun Test
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Role      | Username      | Password   |
+|-----------|--------------|------------|
+| Admin     | admin        | password   |
+| Approver1 | approver1    | password   |
+| Approver2 | approver2    | password   |
+| User      | user1        | password   |
+| User      | user2        | password   |
 
-## Learning Laravel
+> **Catatan:** Username dan password di atas otomatis tersedia setelah menjalankan seeder `CompletedSeeder`.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Versi & Teknologi
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Database:** PostgreSQL (disarankan versi 13.x atau lebih baru) atau boleh pakai MySQL
+- **PHP:** 8.2 atau lebih baru
+- **Framework:** Laravel 12.x
+- **Spreadsheet Export:** phpoffice/phpspreadsheet
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Panduan Penggunaan Aplikasi
 
-### Premium Partners
+### 1. Instalasi
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1. Clone repository ini. ( `https://github.com/faisalfariq/vehicle-tracker` )
+2. Jalankan `composer install` dan `npm install`.
+3. Copy `.env.example` ke `.env` dan sesuaikan konfigurasi database.
+4. Jalankan migrasi dan seed data:
 
-## Contributing
+   ```bash
+   php artisan migrate --seed --class=CompletedSeeder
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   > **Penting:** Hanya jalankan seeder `CompletedSeeder` untuk data awal!
 
-## Code of Conduct
+5. Jalankan aplikasi:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   ```bash
+   php artisan serve
+   ```
 
-## Security Vulnerabilities
+### 2. Mekanisme Booking Kendaraan
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **Buat Booking:**
+  - User mengisi form booking (pilih kendaraan, driver, tanggal, tujuan, alasan, dan dua approver).
+  - Admin Juga boleh mengisi form booking
+  - Hanya kendaraan yang tersedia yang bisa dipilih.
+  - Status awal booking: `draft`.
+- **Submit Booking:**
+  - Setelah submit, status menjadi `pending` dan masuk proses approval. (boleh dilakukan oleh user sendiri ataupun admin)
+- **Approval:**
+  - Approver level 1 dan 2 harus menyetujui.
+  - Hanya approver 2 yang bisa mengubah status booking menjadi `approved` (jika approve, approver 1 otomatis ikut approved jika belum).
+  - Jika salah satu approver menolak, status booking menjadi `rejected`.
+- **Penggunaan Kendaraan:**
+  - Setelah approved, status bisa diubah menjadi `onuse` oleh admin saja (kendaraan otomatis jadi tidak tersedia).
+- **Selesai:**
+  - Setelah selesai digunakan, status booking diubah menjadi `finish`oleh admin saja (kendaraan otomatis tersedia kembali).
+- **Edit/Hapus:**
+  - Booking hanya bisa diedit/dihapus jika status masih `draft`.
 
-## License
+### 3. Modul Master Data
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **Kendaraan:** Data kendaraan yang dapat dipesan.
+- **Driver:** Data supir yang dapat dipilih saat booking.
+- **User:** Data pengguna aplikasi (admin, approver, user biasa).
+- **Region:** Wilayah/area kendaraan dan driver.
+- **Lainnya:** Master data lain digunakan untuk mendukung proses booking dan pelaporan.
+
+### 4. Modul Lain
+
+- **Booking Approval:** Menu khusus untuk approver melakukan approval/reject booking.
+- **Laporan Booking:** Fitur filter & export ke Excel.
+- **Dashboard:** Monitoring status booking, kendaraan, dan statistik pemakaian.
+
+---
+
+## Catatan Penting
+
+- Hanya seeder `CompletedSeeder` yang boleh dijalankan untuk data awal.
+- Pastikan konfigurasi database dan environment sudah benar sebelum menjalankan migrasi/seed.
+- Untuk keamanan, ganti password akun test pada lingkungan produksi.
+
+---
+
+Selamat menggunakan aplikasi Vehicle Tracker!

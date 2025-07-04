@@ -4,6 +4,13 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <style>
+         .table:not(.table-sm):not(.table-md):not(.dataTable) td, .table:not(.table-sm):not(.table-md):not(.dataTable) th {
+         padding: 0 25px;
+         height: 35px;
+         vertical-align: middle;
+     }
+     </style>
 @endpush
 
 @section('main')
@@ -23,53 +30,55 @@
                             <div class="card-header">
                                 <h2 class="section-title text-primary m-0">Detail a Booking Log</h2>
                             </div>
-                            <div class="card-body row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">ID</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $log->id }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Booking</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $log->booking->destination ?? '-' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Event</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ ucfirst($log->event) }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Datetime</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $log->datetime }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Odometer</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $log->odometer }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Notes</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $log->notes }}</label>
-                                        </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="200" class="text-primary font-weight-bold">
+                                                        <i class="fas fa-id-card"></i> ID
+                                                    </td>
+                                                    <td width="50" class="text-center">:</td>
+                                                    <td>{{ $log->id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-calendar-check"></i> Booking
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $log->booking->destination ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-play"></i> Event
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ ucfirst($log->event) }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-clock"></i> Datetime
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $log->datetime }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-tachometer-alt"></i> Odometer
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $log->odometer }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-comment"></i> Notes
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $log->notes }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

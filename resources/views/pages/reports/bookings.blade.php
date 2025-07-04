@@ -1,23 +1,13 @@
 @extends('layouts.app')
-@section('title', 'Dashboard')
-
-@push('style')
-<style>
-    .dashboard-card {
-        box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-        border-radius: 1rem;
-    }
-</style>
-@endpush
+@section('title', 'Laporan Booking Kendaraan')
 
 @section('main')
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1 class="text-primary">Dashboard</h1>
+            <h1 class="text-primary">Laporan Booking Kendaraan</h1>
         </div>
         <div class="section-body">
-            <!-- Filter Form -->
             <form method="GET" class="mb-4">
                 <div class="row align-items-end">
                     <div class="col-md-2">
@@ -69,91 +59,56 @@
                     </div>
                 </div>
             </form>
-            <!-- End Filter Form -->
-            <div class="row">
-                <div class="col-lg-6 mb-4">
-                    <div class="card dashboard-card">
-                        <div class="card-header">
-                            <h4 class="text-primary mb-0">Top 10 Vehicle Usage</h4>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="vehicleUsageChart" height="220"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                    <div class="card dashboard-card">
-                        <div class="card-header">
-                            <h4 class="text-primary mb-0">Bookings Per Day (Last 14 Days)</h4>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="bookingsPerDayChart" height="220"></canvas>
-                        </div>
-                    </div>
-                </div>
+            <form method="GET" action="{{ route('reports.bookings.export') }}">
+                @foreach(request()->except('page') as $key => $val)
+                    <input type="hidden" name="{{ $key }}" value="{{ $val }}">
+                @endforeach
+                <button type="submit" class="btn btn-success mb-3"><i class="fas fa-file-excel"></i> Export Excel</button>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Kode</th>
+                            <th>Tgl Mulai</th>
+                            <th>Tgl Selesai</th>
+                            <th>User</th>
+                            <th>Kendaraan</th>
+                            <th>Plat</th>
+                            <th>Driver</th>
+                            <th>Status</th>
+                            <th>Approver 1</th>
+                            <th>Status 1</th>
+                            <th>Approver 2</th>
+                            <th>Status 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($bookings as $booking)
+                            <tr>
+                                <td>{{ $booking->code }}</td>
+                                <td>{{ $booking->start_datetime }}</td>
+                                <td>{{ $booking->end_datetime }}</td>
+                                <td>{{ optional($booking->user)->name }}</td>
+                                <td>{{ optional($booking->vehicle)->name }}</td>
+                                <td>{{ optional($booking->vehicle)->plate_number }}</td>
+                                <td>{{ optional($booking->driver)->name }}</td>
+                                <td>{{ $booking->status }}</td>
+                                <td>{{ optional($booking->approvals->where('level',1)->first()->approver ?? null)->name }}</td>
+                                <td>{{ $booking->approvals->where('level',1)->first()->status ?? '' }}</td>
+                                <td>{{ optional($booking->approvals->where('level',2)->first()->approver ?? null)->name }}</td>
+                                <td>{{ $booking->approvals->where('level',2)->first()->status ?? '' }}</td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="15" class="text-center">Tidak ada data</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-3">
+                {{ $bookings->withQueryString()->links() }}
             </div>
         </div>
     </section>
 </div>
-@endsection
-
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Vehicle Usage Bar Chart
-    const vehicleUsageCtx = document.getElementById('vehicleUsageChart').getContext('2d');
-    const vehicleUsageChart = new Chart(vehicleUsageCtx, {
-        type: 'bar',
-        data: {
-            labels: {!! json_encode($vehicleUsage->pluck('name')) !!},
-            datasets: [{
-                label: 'Total Bookings',
-                data: {!! json_encode($vehicleUsage->pluck('bookings_count')) !!},
-                backgroundColor: 'rgba(103, 119, 239, 0.7)',
-                borderColor: 'rgba(103, 119, 239, 1)',
-                borderWidth: 2,
-                borderRadius: 8,
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false },
-                title: { display: false }
-            },
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
-
-    // Bookings Per Day Line Chart
-    const bookingsPerDayCtx = document.getElementById('bookingsPerDayChart').getContext('2d');
-    const bookingsPerDayChart = new Chart(bookingsPerDayCtx, {
-        type: 'line',
-        data: {
-            labels: {!! json_encode($bookingsPerDay->pluck('date')) !!},
-            datasets: [{
-                label: 'Bookings',
-                data: {!! json_encode($bookingsPerDay->pluck('total')) !!},
-                fill: true,
-                backgroundColor: 'rgba(103, 119, 239, 0.15)',
-                borderColor: 'rgba(103, 119, 239, 1)',
-                tension: 0.3,
-                pointRadius: 4,
-                pointBackgroundColor: 'rgba(103, 119, 239, 1)',
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false },
-                title: { display: false }
-            },
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
-</script>
-@endpush 
+@endsection 

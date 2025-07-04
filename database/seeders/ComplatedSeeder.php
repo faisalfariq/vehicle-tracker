@@ -20,7 +20,7 @@ use App\Models\Document;
 use App\Models\Setting;
 use App\Models\AppLog;
 
-class NewDatabaseSeeder extends Seeder
+class ComplatedSeeder extends Seeder
 {
     public function run(): void
     {
@@ -55,10 +55,8 @@ class NewDatabaseSeeder extends Seeder
             ]);
         }
 
-        // Users - Create specific authentication users first
+        // Users
         $users = [];
-        
-        // Admin user
         $users[] = User::create([
             'name' => 'Admin User',
             'email' => 'admin@company.com',
@@ -67,8 +65,6 @@ class NewDatabaseSeeder extends Seeder
             'region_id' => $regions[0]->id,
             'is_active' => true,
         ]);
-
-        // Approver users
         $users[] = User::create([
             'name' => 'Approver 1',
             'email' => 'approver1@company.com',
@@ -77,7 +73,6 @@ class NewDatabaseSeeder extends Seeder
             'region_id' => $regions[1]->id,
             'is_active' => true,
         ]);
-
         $users[] = User::create([
             'name' => 'Approver 2',
             'email' => 'approver2@company.com',
@@ -86,8 +81,6 @@ class NewDatabaseSeeder extends Seeder
             'region_id' => $regions[2]->id,
             'is_active' => true,
         ]);
-
-        // Regular users
         $users[] = User::create([
             'name' => 'Regular User 1',
             'email' => 'user1@company.com',
@@ -96,7 +89,6 @@ class NewDatabaseSeeder extends Seeder
             'region_id' => $regions[3]->id,
             'is_active' => true,
         ]);
-
         $users[] = User::create([
             'name' => 'Regular User 2',
             'email' => 'user2@company.com',
@@ -105,8 +97,6 @@ class NewDatabaseSeeder extends Seeder
             'region_id' => $regions[4]->id,
             'is_active' => true,
         ]);
-
-        // Additional users for testing
         foreach (range(3, 8) as $i) {
             $users[] = User::create([
                 'name' => 'User '.$i,
@@ -150,44 +140,60 @@ class NewDatabaseSeeder extends Seeder
             ]);
         }
 
-        // Bookings
+        // Bookings (2 bulan ke depan, 15 data per bulan, 2 hari sekali, variasi kendaraan)
         $bookings = [];
-        foreach (range(1, 8) as $i) {
-            $date = sprintf('2025-07-%02d', $i);
-            $bookingCode = 'BO-' . $date . '-' . str_pad($i, 4, '0', STR_PAD_LEFT);
-            $bookings[] = Booking::create([
-                'code' => $bookingCode,
-                'user_id' => $users[($i+2)%10]->id, // Use regular users for bookings
-                'vehicle_id' => $vehicles[($i-1)%8]->id,
-                'driver_id' => $drivers[($i-1)%8]->id,
-                'start_datetime' => now()->addDays($i),
-                'end_datetime' => now()->addDays($i+1),
-                'destination' => 'Destination '.$i,
-                'reason' => 'Reason for booking '.$i,
-                'status' => ['draft','pending','approved','rejected','onuse','finish'][($i-1)%6],
-            ]);
+        $today = now()->startOfDay();
+        $bookingCount = 0;
+        for ($month = 0; $month < 2; $month++) {
+            for ($i = 0; $i < 15; $i++) {
+                $date = $today->copy()->addMonths($month)->addDays($i*2);
+                $bookingCode = 'BO-' . $date->format('Y-m-d') . '-' . str_pad($i+1+$month*15, 4, '0', STR_PAD_LEFT);
+                $vehicleIdx = ($i + $month*3) % count($vehicles);
+                $driverIdx = ($i + $month*2) % count($drivers);
+                $userIdx = ($i + $month) % count($users);
+                $statusList = ['pending','approved','rejected','onuse','finish'];
+                $status = $statusList[($i+$month)%count($statusList)];
+                $bookings[] = Booking::create([
+                    'code' => $bookingCode,
+                    'user_id' => $users[$userIdx]->id,
+                    'vehicle_id' => $vehicles[$vehicleIdx]->id,
+                    'driver_id' => $drivers[$driverIdx]->id,
+                    'start_datetime' => $date->copy()->setTime(rand(6,10), 0),
+                    'end_datetime' => $date->copy()->addHours(rand(8,24)),
+                    'destination' => 'Destination '.$bookingCode,
+                    'reason' => 'Reason for booking '.$bookingCode,
+                    'status' => $status,
+                ]);
+            }
         }
 
-        // Booking Approvals - Assign approvers to bookings
-        foreach ($bookings as $i => $booking) { 
-            // Assign approver 1 (index 1 in users array)
+        // Booking Approvals
+        foreach ($bookings as $i => $booking) {
+            // Tentukan status approval sesuai status booking
+            if (in_array($booking->status, ['approved', 'onuse', 'finish'])) {
+                $approvalStatus = 'approved';
+                $approvedAt = now();
+            } else {
+                $approvalStatus = 'pending';
+                $approvedAt = null;
+            }
+            // Approver 1
             BookingApproval::create([
                 'booking_id' => $booking->id,
                 'approver_id' => $users[1]->id, // Approver 1
                 'level' => 1,
-                'status' => $booking->status == 'approved' ? 'approved' : 'pending',
+                'status' => $approvalStatus,
                 'note' => 'Approval level 1 for booking '.$booking->code,
-                'approved_at' => $booking->status == 'approved' ? now() : null,
+                'approved_at' => $approvedAt,
             ]);
-
-            // Assign approver 2 (index 2 in users array)
+            // Approver 2
             BookingApproval::create([
                 'booking_id' => $booking->id,
                 'approver_id' => $users[2]->id, // Approver 2
                 'level' => 2,
-                'status' => $booking->status == 'approved' ? 'approved' : 'pending',
+                'status' => $approvalStatus,
                 'note' => 'Approval level 2 for booking '.$booking->code,
-                'approved_at' => $booking->status == 'approved' ? now() : null,
+                'approved_at' => $approvedAt,
             ]);
         }
 
@@ -197,7 +203,7 @@ class NewDatabaseSeeder extends Seeder
                 BookingLog::create([
                     'booking_id' => $booking->id,
                     'event' => $event,
-                    'datetime' => now()->addDays($i)->addHours($j),
+                    'datetime' => $booking->start_datetime->copy()->addHours($j*2),
                     'odometer' => 10000 + $i*100 + $j*10,
                     'notes' => 'Log '.$event.' for booking '.$booking->id,
                 ]);
@@ -209,11 +215,11 @@ class NewDatabaseSeeder extends Seeder
             FuelLog::create([
                 'vehicle_id' => $booking->vehicle_id,
                 'booking_id' => $booking->id,
-                'date' => now()->addDays($i),
-                'fuel_amount' => 10 + $i,
+                'date' => $booking->start_datetime,
+                'fuel_amount' => rand(8, 20),
                 'fuel_cost' => 200000 + $i*10000,
                 'km_before' => 10000 + $i*100,
-                'km_after' => 10100 + $i*100,
+                'km_after' => 10100 + $i*100 + rand(10,50),
             ]);
         }
 
@@ -245,14 +251,14 @@ class NewDatabaseSeeder extends Seeder
         // App Logs
         foreach (range(1, 10) as $i) {
             AppLog::create([
-                'user_id' => $users[($i-1)%10]->id,
+                'user_id' => $users[($i-1)%count($users)]->id,
                 'action' => ['login','logout','create','update','delete'][($i-1)%5],
                 'module' => ['user','vehicle','booking','fuel','service'][($i-1)%5],
                 'ip_address' => '192.168.1.'.($i),
             ]);
         }
 
-        $this->command->info('NewDatabaseSeeder completed successfully!');
+        $this->command->info('ComplatedSeeder completed successfully!');
         $this->command->info('Test users created:');
         $this->command->info('- Admin: admin@company.com / Admin123');
         $this->command->info('- Approver 1: approver1@company.com / Approver123');

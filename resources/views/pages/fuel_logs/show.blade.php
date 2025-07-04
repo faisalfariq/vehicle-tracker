@@ -3,6 +3,13 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <style>
+         .table:not(.table-sm):not(.table-md):not(.dataTable) td, .table:not(.table-sm):not(.table-md):not(.dataTable) th {
+         padding: 0 25px;
+         height: 35px;
+         vertical-align: middle;
+     }
+     </style>
 @endpush
 
 @section('main')
@@ -22,77 +29,69 @@
                             <div class="card-header">
                                 <h2 class="section-title text-primary m-0">Fuel Log Detail</h2>
                             </div>
-                            <div class="card-body row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">ID</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $fuelLog->id }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Vehicle</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $fuelLog->vehicle->name ?? '-' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Booking</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $fuelLog->booking->destination ?? '-' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Date</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $fuelLog->date }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="col-md-6 control-label text-primary">Fuel Amount</label>
-                                        <div class="col-md-6">
-                                            <label class="custom-switch-description">{{ $fuelLog->fuel_amount }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="col-md-6 control-label text-primary">Fuel Cost</label>
-                                        <div class="col-md-6">
-                                            <label class="custom-switch-description">{{ $fuelLog->fuel_cost }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="col-md-6 control-label text-primary">Date</label>
-                                        <div class="col-md-6">
-                                            <label class="custom-switch-description">{{ $fuelLog->date }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-6 control-label text-primary">KM Before</label>
-                                        <div class="col-md-6">
-                                            <label class="custom-switch-description">{{ $fuelLog->km_before }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-6 control-label text-primary">KM After</label>
-                                        <div class="col-md-6">
-                                            <label class="custom-switch-description">{{ $fuelLog->km_after }}</label>
-                                        </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="200" class="text-primary font-weight-bold">
+                                                        <i class="fas fa-id-card"></i> ID
+                                                    </td>
+                                                    <td width="50" class="text-center">:</td>
+                                                    <td>{{ $fuelLog->id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-car"></i> Vehicle
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $fuelLog->vehicle->name ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-calendar-check"></i> Booking
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $fuelLog->booking->destination ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-calendar"></i> Date
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $fuelLog->date }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-gas-pump"></i> Fuel Amount
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $fuelLog->fuel_amount }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-money-bill"></i> Fuel Cost
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $fuelLog->fuel_cost }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-tachometer-alt"></i> KM Before
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $fuelLog->km_before }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-tachometer-alt"></i> KM After
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $fuelLog->km_after }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

@@ -4,6 +4,13 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <style>
+         .table:not(.table-sm):not(.table-md):not(.dataTable) td, .table:not(.table-sm):not(.table-md):not(.dataTable) th {
+         padding: 0 25px;
+         height: 35px;
+         vertical-align: middle;
+     }
+     </style>
 @endpush
 
 @section('main')
@@ -23,37 +30,54 @@
                             <div class="card-header">
                                 <h2 class="section-title text-primary m-0">Detail a User</h2>
                             </div>
-                            <div class="card-body row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Name</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $user->name }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Email</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $user->email }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Role</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $user->role->name ?? '-' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Status</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $user->is_active ? 'Active' : 'Inactive' }}</label>
-                                        </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="200" class="text-primary font-weight-bold">
+                                                        <i class="fas fa-id-card"></i> ID
+                                                    </td>
+                                                    <td width="50" class="text-center">:</td>
+                                                    <td>{{ $user->id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-user"></i> Name
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $user->name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-envelope"></i> Email
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $user->email }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-user-tag"></i> Role
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $user->role->name ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-info-circle"></i> Status
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>
+                                                        @if($user->is_active)
+                                                            <span class="badge badge-success">Active</span>
+                                                        @else
+                                                            <span class="badge badge-danger">Inactive</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

@@ -47,8 +47,8 @@
                                 <div class="clearfix mb-3"></div>
 
                                 <div id="userTableList">
-                                    <div class="table-responsive">
-                                        <table class="table-striped table">
+                                    <div class="table-responsive" style="overflow-x: auto;">
+                                        <table class="table-striped table" style="width: 120%;">
                                             <thead>
                                                 <tr>
                                                     <th>Booking Code</th>
@@ -76,22 +76,33 @@
                                                         <td>{{ $booking->destination }}</td>
                                                         <td>{{ $booking->start_datetime }}</td>
                                                         <td>{{ $booking->end_datetime }}</td>
-                                                        <td>{{ ucfirst($booking->status) }}</td>
+                                                        <td>
+                                                            @if($booking->status == 'pending')
+                                                                <span class="badge badge-warning">Pending</span>
+                                                            @elseif($booking->status == 'approved')
+                                                                <span class="badge badge-primary">Approved</span>
+                                                            @elseif($booking->status == 'rejected')
+                                                                <span class="badge badge-danger">Rejected</span>
+                                                            @elseif($booking->status == 'finish')
+                                                                <span class="badge badge-success">Completed</span>
+                                                            @elseif($booking->status == 'onuse')
+                                                                <span class="badge badge-info">Cancelled</span>
+                                                            @else
+                                                                <span class="badge badge-light text-white">{{ ucfirst($booking->status) }}</span>
+                                                            @endif
+                                                        </td>
                                                         <td>
                                                             <a href="{{ route('bookings.show', $booking->id) }}"
                                                                 class="btn btn-info btn-sm">Detail</a>
-                                                            <a href="{{ route('bookings.edit', $booking->id) }}"
-                                                                class="btn btn-warning btn-sm">Edit</a>
-                                                            <button type="button"
-                                                                class="btn btn-danger btn-sm btn-delete-booking"
-                                                                data-id="{{ $booking->id }}">
-                                                                Hapus
-                                                            </button>
-                                                            {{-- <form action="{{ route('bookings.destroy', $booking->id) }}"
-                                                                method="POST" style="display:inline;">
-                                                                @csrf @method('DELETE')
-                                                                <button class="btn btn-danger btn-sm">Hapus</button>
-                                                            </form> --}}
+                                                            @if($booking->status === 'draft')
+                                                                <a href="{{ route('bookings.edit', $booking->id) }}"
+                                                                    class="btn btn-warning btn-sm">Edit</a>
+                                                                <button type="button"
+                                                                    class="btn btn-danger btn-sm btn-delete-booking"
+                                                                    data-id="{{ $booking->id }}">
+                                                                    Hapus
+                                                                </button>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach

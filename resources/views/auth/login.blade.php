@@ -25,6 +25,7 @@
         .login-center {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
@@ -172,6 +173,7 @@
         <circle cx="1300" cy="700" r="90" fill="#aeb5ed" fill-opacity="0.10"/>
     </svg>
     <div class="login-center">
+        <!-- Login Form Section -->
         <div class="login-wrapper">
             <div class="login-illustration">
                 <img src="{{ asset('img/drawkit/drawkit-full-stack-man-colour.svg') }}" alt="Login Illustration">
@@ -187,22 +189,83 @@
                 @if(session('error'))
                     <div class="error-msg">{{ session('error') }}</div>
                 @endif
-                <form method="POST" action="#">
+                @if($errors->any())
+                    <div class="error-msg">
+                        @foreach($errors->all() as $error)
+                            {{ $error }}<br>
+                        @endforeach
+                    </div>
+                @endif
+                <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="form-group">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" name="email" class="form-control" required autofocus>
+                        <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required autofocus>
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
-                            <input type="password" id="password" name="password" class="form-control" required>
+                            <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
                             <button type="button" class="toggle-password" tabindex="-1" onclick="togglePassword()"><i class="fa fa-eye" id="eyeIcon"></i></button>
+                        </div>
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="remember" name="remember">
+                            <label class="custom-control-label" for="remember">Remember me</label>
                         </div>
                     </div>
                     <a href="#" class="forgot-link">Forgot password?</a>
                     <button type="submit" class="btn-login">Login</button>
                 </form>
+            </div>
+        </div>
+        
+        <!-- Test Users Section - Below the login form as separate card -->
+        <div class="test-users-section" style="margin-top: 2rem; background: rgba(255,255,255,0.9); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); backdrop-filter: blur(8px); width: 100%; max-width: 950px;">
+            <h6 style="color: #64748b; font-weight: 600; margin-bottom: 1rem; text-align: center; font-size: 1.1rem;">
+                <i class="fas fa-users"></i> Test Users
+            </h6>
+            <div class="test-users-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; font-size: 0.9rem;">
+                <div class="user-card" style="background: rgba(103, 119, 239, 0.1); padding: 0.75rem; border-radius: 6px; border-left: 3px solid #6777ef; transition: all 0.2s ease;">
+                    <div style="font-weight: 600; color: #6777ef; margin-bottom: 0.25rem;">👑 Admin</div>
+                    <div style="color: #64748b;">admin@company.com</div>
+                    <div style="color: #64748b;">Password: Admin123</div>
+                </div>
+                
+                <div class="user-card" style="background: rgba(34, 197, 94, 0.1); padding: 0.75rem; border-radius: 6px; border-left: 3px solid #22c55e; transition: all 0.2s ease;">
+                    <div style="font-weight: 600; color: #22c55e; margin-bottom: 0.25rem;">✅ Approver 1</div>
+                    <div style="color: #64748b;">approver1@company.com</div>
+                    <div style="color: #64748b;">Password: Approver123</div>
+                </div>
+                
+                <div class="user-card" style="background: rgba(34, 197, 94, 0.1); padding: 0.75rem; border-radius: 6px; border-left: 3px solid #22c55e; transition: all 0.2s ease;">
+                    <div style="font-weight: 600; color: #22c55e; margin-bottom: 0.25rem;">✅ Approver 2</div>
+                    <div style="color: #64748b;">approver2@company.com</div>
+                    <div style="color: #64748b;">Password: Approver123</div>
+                </div>
+                
+                <div class="user-card" style="background: rgba(59, 130, 246, 0.1); padding: 0.75rem; border-radius: 6px; border-left: 3px solid #3b82f6; transition: all 0.2s ease;">
+                    <div style="font-weight: 600; color: #3b82f6; margin-bottom: 0.25rem;">👤 User 1</div>
+                    <div style="color: #64748b;">user1@company.com</div>
+                    <div style="color: #64748b;">Password: password</div>
+                </div>
+                
+                <div class="user-card" style="background: rgba(59, 130, 246, 0.1); padding: 0.75rem; border-radius: 6px; border-left: 3px solid #3b82f6; transition: all 0.2s ease;">
+                    <div style="font-weight: 600; color: #3b82f6; margin-bottom: 0.25rem;">👤 User 2</div>
+                    <div style="color: #64748b;">user2@company.com</div>
+                    <div style="color: #64748b;">Password: password</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1rem; text-align: center; font-size: 0.8rem; color: #94a3b8;">
+                <i class="fas fa-info-circle"></i> Click on any user card to auto-fill the form above
             </div>
         </div>
     </div>
@@ -220,6 +283,44 @@
                 icon.classList.add('fa-eye');
             }
         }
+
+        // Auto-fill login form when clicking on user cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const userCards = document.querySelectorAll('.user-card');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+
+            userCards.forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function() {
+                    const email = this.querySelector('div:nth-child(2)').textContent;
+                    const password = this.querySelector('div:nth-child(3)').textContent.replace('Password: ', '');
+                    
+                    emailInput.value = email;
+                    passwordInput.value = password;
+                    
+                    // Add visual feedback
+                    card.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        card.style.transform = 'scale(1)';
+                    }, 150);
+                    
+                    // Focus on password field
+                    passwordInput.focus();
+                });
+
+                // Add hover effect
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+        });
     </script>
 </body>
 </html> 

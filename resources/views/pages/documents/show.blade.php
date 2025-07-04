@@ -4,6 +4,13 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <style>
+         .table:not(.table-sm):not(.table-md):not(.dataTable) td, .table:not(.table-sm):not(.table-md):not(.dataTable) th {
+         padding: 0 25px;
+         height: 35px;
+         vertical-align: middle;
+     }
+     </style>
 @endpush
 
 @section('main')
@@ -23,33 +30,42 @@
                             <div class="card-header">
                                 <h2 class="section-title text-primary m-0">Detail a Document</h2>
                             </div>
-                            <div class="card-body row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">ID</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $document->id }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Booking</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $document->booking->destination ?? '-' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">File</label>
-                                        <div class="col-md-8">
-                                            @if($document->file_path)
-                                                <a href="{{ asset('storage/'.$document->file_path) }}" target="_blank">Lihat File</a>
-                                            @else
-                                                <label class="custom-switch-description">-</label>
-                                            @endif
-                                        </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="200" class="text-primary font-weight-bold">
+                                                        <i class="fas fa-id-card"></i> ID
+                                                    </td>
+                                                    <td width="50" class="text-center">:</td>
+                                                    <td>{{ $document->id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-calendar-check"></i> Booking
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $document->booking->destination ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-file"></i> File
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>
+                                                        @if($document->file_path)
+                                                            <a href="{{ asset('storage/'.$document->file_path) }}" target="_blank" class="btn btn-sm btn-info">
+                                                                <i class="fas fa-eye"></i> Lihat File
+                                                            </a>
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

@@ -4,6 +4,13 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <style>
+         .table:not(.table-sm):not(.table-md):not(.dataTable) td, .table:not(.table-sm):not(.table-md):not(.dataTable) th {
+         padding: 0 25px;
+         height: 35px;
+         vertical-align: middle;
+     }
+     </style>
 @endpush
 
 @section('main')
@@ -23,61 +30,81 @@
                             <div class="card-header">
                                 <h2 class="section-title text-primary m-0">Detail a Booking Approval</h2>
                             </div>
-                            <div class="card-body row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">ID</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $approval->id }}</label>
-                                        </div>
-                                    </div>
+                            <div class="card-body">
+                                <div class="float-right mt-2">
+                                    <a type="button" href="#" class="btn btn-info"><i class="fas fa-paper-plane"></i> Submit</a>
+                                    <a type="button" href="#" class="btn btn-danger"><i class="fas fa-times"></i> Reject</a>
+                                    <a type="button" href="#" class="btn btn-primary"><i class="fas fa-check"></i> Approve</a>
+                                    <a type="button" href="#" class="btn btn-info"><i class="fas fa-car"></i> Used</a>
+                                    <a type="button" href="#" class="btn btn-success"><i class="fas fa-flag-checkered"></i> Finish</a>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Booking</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $approval->booking->destination ?? '-' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Approver</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $approval->approver->name ?? '-' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Level</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $approval->level }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Status</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ ucfirst($approval->status) }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Note</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $approval->note }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label text-primary">Approved At</label>
-                                        <div class="col-md-8">
-                                            <label class="custom-switch-description">{{ $approval->approved_at }}</label>
-                                        </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="200" class="text-primary font-weight-bold">
+                                                        <i class="fas fa-id-card"></i> ID
+                                                    </td>
+                                                    <td width="50" class="text-center">:</td>
+                                                    <td>{{ $approval->id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-calendar-check"></i> Booking
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $approval->booking->destination ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-user-check"></i> Approver
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $approval->approver->name ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-layer-group"></i> Level
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $approval->level }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-info-circle"></i> Status
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>
+                                                        @if($approval->status == 'pending')
+                                                            <span class="badge badge-warning">Pending</span>
+                                                        @elseif($approval->status == 'approved')
+                                                            <span class="badge badge-success">Approved</span>
+                                                        @elseif($approval->status == 'rejected')
+                                                            <span class="badge badge-danger">Rejected</span>
+                                                        @else
+                                                            <span class="badge badge-light">{{ ucfirst($approval->status) }}</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-comment"></i> Note
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $approval->note }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-primary font-weight-bold">
+                                                        <i class="fas fa-clock"></i> Approved At
+                                                    </td>
+                                                    <td class="text-center">:</td>
+                                                    <td>{{ $approval->approved_at }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

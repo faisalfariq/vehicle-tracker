@@ -40,37 +40,39 @@
                                 <div class="clearfix mb-3"></div>
                                 <div id="driverTableList">
                                     <div class="table-responsive">
-                                        <table class="table-striped table">
+                                        <table class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
+                                                    <th class="text-center">ID</th>
                                                     <th>Name</th>
                                                     <th>License Number</th>
                                                     <th>Phone</th>
                                                     <th>Region</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
+                                                    <th class="text-center">Status</th>
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="drivers_list">
                                                 @foreach ($drivers as $driver)
                                                     <tr>
-                                                        <td>{{ $driver->id }}</td>
+                                                        <td class="text-center">{{ $driver->id }}</td>
                                                         <td>{{ $driver->name }}</td>
                                                         <td>{{ $driver->license_number }}</td>
                                                         <td>{{ $driver->phone }}</td>
                                                         <td>{{ $driver->region->name ?? '-' }}</td>
-                                                        <td>
+                                                        <td class="text-center">
                                                             @if ($driver->is_active)
-                                                                <span class="badge bg-success">Active</span>
+                                                                <span class="badge badge-success">Active</span>
                                                             @else
-                                                                <span class="badge bg-secondary">Inactive</span>
+                                                                <span class="badge badge-secondary">Inactive</span>
                                                             @endif
                                                         </td>
-                                                        <td>
-                                                            <a href="{{ route('drivers.show', $driver->id) }}" class="btn btn-info btn-sm">Detail</a>
-                                                            <a href="{{ route('drivers.edit', $driver->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                            <button type="button" class="btn btn-danger btn-sm btn-delete-driver" data-id="{{ $driver->id }}">Hapus</button>
+                                                        <td class="text-center">
+                                                            <div class="btn-group btn-group-sm" role="group">
+                                                                <a href="{{ route('drivers.show', $driver->id) }}" class="btn btn-info">Detail</a>
+                                                                <a href="{{ route('drivers.edit', $driver->id) }}" class="btn btn-warning">Edit</a>
+                                                                <button type="button" class="btn btn-danger btn-delete-driver" data-id="{{ $driver->id }}">Hapus</button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
